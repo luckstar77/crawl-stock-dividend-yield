@@ -1,0 +1,25 @@
+{
+  "name": "crawl-stock-dividend-yield",
+  "version": "1.0.0",
+  "description": "抓取股票殖利率資訊，包含歷年除權息、殖利率、填權息成功率",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo ok"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/luckstar77/crawl-stock-dividend-yield.git"
+  },
+  "keywords": [
+    "TAIWAN",
+    "STOCK",
+    "DIVIDEND",
+    "YIELD"
+  ],
+  "author": "Allen Lai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luckstar77/crawl-stock-dividend-yield/issues"
+  },
+  "homepage": "https://github.com/luckstar77/crawl-stock-dividend-yield#readme"
+}
