@@ -51,3 +51,18 @@ document.querySelector("#tblDetail > tbody > tr:nth-child(5) > td:nth-child(12)"
 - 配股 = 股票股利 x 100
 - 配股價值公式 = 配股 x 除權息參考價
 - 還原殖利率公式 =（現金股利 + 配股價值）÷ 除權息前一日收盤價
+
+## 資料庫
+- mongodb
+  - stock
+    - id `string`
+    - company `string`
+    - price `double`
+    - historicDividendYield `double`
+    - fulfillDividend `bool`
+- redis
+  - STOCK_ID_INDEX `int`
+
+## 開發流程
+- sudo service mongodb start
+- sudo service redis-server start
