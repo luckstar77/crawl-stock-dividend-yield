@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/luckstar77/crawl-stock-dividend-yield/issues"
   },
-  "homepage": "https://github.com/luckstar77/crawl-stock-dividend-yield#readme"
+  "homepage": "https://github.com/luckstar77/crawl-stock-dividend-yield#readme",
+  "dependencies": {
+    "redis": "^4.3.1"
+  }
 }
