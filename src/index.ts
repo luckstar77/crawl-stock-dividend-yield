@@ -1,11 +1,12 @@
-import { createClient } from 'redis';
+import { connect as redisConnect } from './db/redis';
+import { connect as mongodbConnect } from './db/mongodb';
+
+const COLLECTION = 'stock';
+
 (async () => {
-    const client = createClient();
+    const mongodbClient = await mongodbConnect();
+    const redisClient = await redisConnect();
     
-    // client.on('error', (err) => console.log('Redis Client Error', err));
-    
-    await client.connect();
-    
-    // await client.set('key', 'value');
-    const value = await client.get('STOCK_ID_INDEX');
+    const STOCK_ID_INDEX = await redisClient.get('STOCK_ID_INDEX');
+    const findResult = await mongodbClient.collection(COLLECTION).find({}).toArray();
 })();
