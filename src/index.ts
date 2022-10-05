@@ -3,7 +3,7 @@ import { connect as mongodbConnect } from './db/mongodb';
 import axios from 'axios';
 import * as acorn from "acorn";
 import * as cheerio from "cheerio";
-
+import * as R from 'ramda'
 
 const COLLECTION = 'stock';
 const STOCK_IDS_URL = 'https://goodinfo.tw/tw/StockLib/js/TW_STOCK_ID_NM_LIST.js?0';
@@ -75,4 +75,32 @@ interface Dividend {
         }
         dividends[year!].push(dividendState);
     }
+    const dividendsValues = R.values(dividends);
+    if(dividendsValues.length === 0) return;
+
+    const dividendsFailureObject = R.filter(value => {
+        if(value.length === 1) {
+            if(value[0] === DividendState.FAILURE) return true;
+            else return false;
+        }
+        
+       return R.any(R.equals(1))( R.splitAt(1, value)[1]);
+        
+    }, dividends)
+    const dividendsFailures = R.keys(dividendsFailureObject);
+    const successRate = (1-(dividendsFailures.length / dividendsValues.length))*100.00;
+
+    const updated = await mongodbClient.collection(COLLECTION).updateOne({
+        id: stockId
+    }, {
+        $set: { 
+            name: stockName, 
+            successRate,
+            allAvgCashYields,
+            allAvgRetroactiveYields,
+        },
+        $currentDate: { updated: true },
+    }, {
+        upsert: true,
+    })
 })();
