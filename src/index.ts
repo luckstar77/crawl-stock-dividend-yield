@@ -103,4 +103,6 @@ interface Dividend {
     }, {
         upsert: true,
     })
+    
+    await redisClient.incr('STOCK_ID_INDEX');
 })();
