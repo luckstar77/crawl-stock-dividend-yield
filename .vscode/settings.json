@@ -1,0 +1,5 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }, //儲存時自動執行 ESLint 格式化
+  }
