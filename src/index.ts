@@ -50,6 +50,10 @@ interface Dividend {
     const price = parseFloat($('body > table:nth-child(8) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(1)').text());
     const allAvgCashYields = parseFloat($('#divDividendSumInfo > div > div > table > tbody > tr:nth-child(4) > td:nth-child(5)').text());
     const allAvgRetroactiveYields = parseFloat($('#divDividendSumInfo > div > div > table > tbody > tr:nth-child(6) > td:nth-child(5)').text());
+    if (isNaN(price) || allAvgRetroactiveYields === 0 || isNaN(allAvgRetroactiveYields)) {
+        await redisClient.incr('STOCK_ID_INDEX');
+        process.exit();
+    }
 
     let yearText:string;
     let year:number;
@@ -78,7 +82,10 @@ interface Dividend {
         dividends[year!].push(dividendState);
     }
     const dividendsValues = R.values(dividends);
-    if(dividendsValues.length === 0) return;
+    if(dividendsValues.length === 0) {
+        await redisClient.incr('STOCK_ID_INDEX');
+        process.exit();
+    }
 
     const dividendsFailureObject = R.filter(value => {
         if(value.length === 1) {
