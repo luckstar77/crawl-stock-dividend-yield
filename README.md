@@ -25,6 +25,7 @@
   - 沒有則判斷第一個是否成功填權息
   - 成功填權息則將記錄增加1
 - 取得的紀錄除上所有年份的數量得出填權息成功率
+- 加上除權息次數、填權息次數、統計年分
 - 將填權息成功率記錄到資料庫
 - 增加爬蟲抓取序列指標並記錄
   
@@ -72,10 +73,14 @@ document.querySelector("#tblDetail > tbody > tr:nth-child(5) > td:nth-child(12)"
 - mongodb
   - stock
     - id `string`
-    - company `string`
-    - price `double`
-    - historicDividendYield `double`
-    - fulfillDividend `bool`
+    - name `string`
+    - successRate `double`
+    - allAvgCashYields `double`
+    - allAvgRetroactiveYields `double`
+    - amountOfDividend `double`
+    - amountOfSuccess `double`
+    - dividendYearStart `int`
+    - dividendYearEnd `int`
 - redis
   - STOCK_ID_INDEX `int`
 

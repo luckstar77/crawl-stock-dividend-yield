@@ -24,7 +24,6 @@ interface Dividend {
     const redisClient = await redisConnect();
     
     let stockIdsIndex:number = parseInt((await redisClient.get('STOCK_ID_INDEX'))!);
-    const findResult = await mongodbClient.collection(COLLECTION).find({}).toArray();
     const {data: stockIdsText} = await axios.get(STOCK_IDS_URL);
     const stockIdsParsed = acorn.parse(
         stockIdsText,
@@ -82,7 +81,9 @@ interface Dividend {
         dividends[year!].push(dividendState);
     }
     const dividendsValues = R.values(dividends);
-    if(dividendsValues.length === 0) {
+    const dividendsYears = R.keys(dividends);
+    const amountOfDividend = dividendsValues.length;
+    if(amountOfDividend === 0) {
         await redisClient.incr('STOCK_ID_INDEX');
         process.exit();
     }
@@ -97,7 +98,10 @@ interface Dividend {
         
     }, dividends);
     const dividendsFailures = R.keys(dividendsFailureObject);
-    const successRate = (1-(dividendsFailures.length / dividendsValues.length))*100.00;
+    const amountOfSuccess = amountOfDividend - dividendsFailures.length;
+    const successRate = (amountOfSuccess / amountOfDividend) * 100.00;
+    const dividendYearStart = dividendsYears[0];
+    const dividendYearEnd = dividendsYears[amountOfDividend - 1];
 
     const updated = await mongodbClient.collection(COLLECTION).updateOne({
         id: stockId
@@ -107,6 +111,10 @@ interface Dividend {
             successRate,
             allAvgCashYields,
             allAvgRetroactiveYields,
+            amountOfDividend,
+            amountOfSuccess,
+            dividendYearStart,
+            dividendYearEnd
         },
         $currentDate: { updated: true },
     }, {
